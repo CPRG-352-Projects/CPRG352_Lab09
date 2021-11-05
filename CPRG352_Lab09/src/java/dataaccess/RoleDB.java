@@ -1,10 +1,8 @@
 package dataaccess;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
 import models.Role;
 
 /**
@@ -15,29 +13,24 @@ public class RoleDB {
     
     public List<Role> getAll() throws Exception{
         List<Role> roles = new ArrayList<>();
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
         
-        String sql = "SELECT * FROM role";
-        
-                try {
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int roleId = rs.getInt(1);
-                String roleName = rs.getString(2);
-                Role role = new Role(roleId, roleName);
-                roles.add(role);
-            }
+        try {
+            roles = em.createNamedQuery("Role.findAll").getResultList();
+            return roles;
         } finally {
-            DBUtil.closeResultSet(rs);
-            DBUtil.closePreparedStatement(ps);
-            cp.freeConnection(con);
+            em.close();
         }
-
-        return roles;
+    }
+    
+    public Role get(int roleId) throws Exception {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        try {
+            Role role = em.find(Role.class, roleId);
+            return role;
+        } finally {
+            em.close();
+        }
     }
     
 }

@@ -1,14 +1,15 @@
 
 package services;
 
+import dataaccess.RoleDB;
 import dataaccess.UserDB;
 import java.util.List;
+import models.Role;
 import models.User;
 
 public class UserService {
     
      public List<User> getAll() throws Exception {
-        System.out.println("In the User Service");
         UserDB userDB = new UserDB();
         List<User> users = userDB.getAll();
         return users;
@@ -23,10 +24,11 @@ public class UserService {
     }
     
     public void delete(String email) throws Exception {
-        User user = new User();
-        user.setEmail(email);
+        System.out.println("in the delete service");
         UserDB userDB = new UserDB();
-        userDB.delete(user);
+        User getUser = userDB.get(email);
+        System.out.println("getUser: " + getUser);
+        userDB.delete(getUser);
     }
     
     public User get(String email) throws Exception {
@@ -35,8 +37,15 @@ public class UserService {
         return user;
     }
     
-    public void update(User user) throws Exception {
+    public void update(String email, String firstName, String lastName, String password, int roleId) throws Exception {
         UserDB userDB = new UserDB();
-        userDB.update(user);
+        User getUser = userDB.get(email);
+        getUser.setFirstName(firstName);
+        getUser.setLastName(lastName);
+        getUser.setPassword(password);
+        RoleDB roleDB = new RoleDB();
+        Role updateRole = roleDB.get(roleId);
+        getUser.setRole(updateRole);
+        userDB.update(getUser);
     }
 }

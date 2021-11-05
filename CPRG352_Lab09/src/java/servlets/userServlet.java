@@ -26,17 +26,17 @@ public class userServlet extends HttpServlet {
           try {           
             List<User> users = ns.getAll();
             request.setAttribute("users", users);
-            System.out.println(users);
             
             List<Role> roles = rs.getAll();
             request.setAttribute("roleLabel", roles);
-          /*   System.out.println(roles.get(0).getRole_name());
-            System.out.println(roles.get(1).getRole_name());
-            System.out.println(roles.get(2).getRole_name());*/
+//            System.out.println(roles.get(0).getRoleName());
+//            System.out.println(roles.get(1).getRoleName());
+//            System.out.println(roles.get(2).getRoleName());
             
         } catch (Exception ex) {
             System.out.println("Error loading Users");
         }
+        
         getServletContext().getRequestDispatcher("/WEB-INF/Users.jsp").forward(request, response);
         return;
     }
@@ -80,10 +80,10 @@ public class userServlet extends HttpServlet {
                 case "edit":
                     User toUpdateUser = us.get(toUpdate);
                     request.setAttribute("updatedEmail", toUpdateUser.getEmail());
-                    request.setAttribute("updatedFirstName", toUpdateUser.getFirst_name());
-                    request.setAttribute("updatedLastName", toUpdateUser.getLast_name());
+                    request.setAttribute("updatedFirstName", toUpdateUser.getFirstName());
+                    request.setAttribute("updatedLastName", toUpdateUser.getLastName());
                     request.setAttribute("updatedPassword", toUpdateUser.getPassword());
-                    request.setAttribute("updatedRole", toUpdateUser.getRole());
+                    request.setAttribute("updatedRole", toUpdateUser.getRole().getRoleId());
                     break;
                 case "save":
                     email = request.getParameter("updatedEmail");
@@ -91,8 +91,7 @@ public class userServlet extends HttpServlet {
                     last_name = request.getParameter("updatedLastName");
                     password = request.getParameter("updatedPassword");
                     role = Integer.parseInt(request.getParameter("updatedRole"));
-                    User updatedUser = new User(email, active, first_name, last_name, password, role);
-                    us.update(updatedUser);
+                    us.update(email, first_name, last_name, password, role);
                     System.out.println("we updated the details!");
                     break;
                 default: 
