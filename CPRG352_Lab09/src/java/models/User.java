@@ -56,7 +56,6 @@ public class User implements Serializable {
     @JoinColumn(name = "role", referencedColumnName = "role_id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Role role;
-    private List<User> userList;
 
     public User() {
     }
@@ -121,12 +120,7 @@ public class User implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
-    
-    @XmlTransient
-    public List<User> getUserList() {
-        return userList;
-    }
-
+  
     @Override
     public int hashCode() {
         int hash = 0;

@@ -24,10 +24,8 @@ public class UserService {
     }
     
     public void delete(String email) throws Exception {
-        System.out.println("in the delete service");
         UserDB userDB = new UserDB();
         User getUser = userDB.get(email);
-        System.out.println("getUser: " + getUser);
         userDB.delete(getUser);
     }
     

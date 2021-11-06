@@ -68,6 +68,7 @@ public List<User> getAll() throws Exception {
         EntityTransaction trans = em.getTransaction();
         
         try {
+            
             trans.begin();
             em.merge(user);
             trans.commit();

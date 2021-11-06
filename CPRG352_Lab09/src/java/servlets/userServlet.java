@@ -29,9 +29,6 @@ public class userServlet extends HttpServlet {
             
             List<Role> roles = rs.getAll();
             request.setAttribute("roleLabel", roles);
-//            System.out.println(roles.get(0).getRoleName());
-//            System.out.println(roles.get(1).getRoleName());
-//            System.out.println(roles.get(2).getRoleName());
             
         } catch (Exception ex) {
             System.out.println("Error loading Users");
